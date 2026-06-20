@@ -1,0 +1,45 @@
+name: CI — Testes Automatizados
+
+on:
+  push:
+    branches:
+      - main
+
+  pull_request:
+    branches:
+      - main
+
+  workflow_dispatch:
+
+  schedule:
+    - cron: '0 18 * * 6'  # Sábado às 15h BRT (18h UTC)
+
+jobs:
+  testes:
+    name: Testes
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout do repositório
+        uses: actions/checkout@v4
+
+      - name: Configurar Node.js 20.x
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+          cache: 'npm'
+
+      - name: Instalar dependências
+        run: npm ci
+
+      - name: Executar testes e gerar relatório HTML
+        run: npm run test:ci
+
+      - name: Publicar relatório como artefato
+        uses: actions/upload-artifact@v4
+        # Executa mesmo se os testes falharem
+        if: always()
+        with:
+          name: relatorio-testes
+          path: mochawesome-report/
+          retention-days: 30
