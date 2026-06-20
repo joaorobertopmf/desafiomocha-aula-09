@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "mocha"
+    "test": "mocha",
+    "test:ci": "mocha --reporter mochawesome --reporter-options reportDir=mochawesome-report,reportFilename=relatorio-testes,overwrite=true"
   },
   "keywords": [],
   "author": "",
@@ -12,5 +13,8 @@
   "type": "module",
   "dependencies": {
     "mocha": "^11.7.5"
+  },
+  "devDependencies": {
+    "mochawesome": "^7.1.4"
   }
 }
